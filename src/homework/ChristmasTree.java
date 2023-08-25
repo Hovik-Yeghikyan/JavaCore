@@ -1,18 +1,14 @@
-package homework.chapter3;
+package homework;
 
-public class ChristmasTree2 {
+public class ChristmasTree {
     public static void main(String[] args) {
-
         for (int i = 0; i < 6; i++) {
-            for (int j = 5; j > i; j--) {
+            for (int j = 6; j > i; j--) {
                 System.out.print(" ");
             }
             for (int k = 0; k < i; k++) {
-                if (i == 1)
-                    System.out.print("~*~");
-                else System.out.print(" *");
+                System.out.print(" *");
             }
-
             System.out.println();
         }
     }
