@@ -1,4 +1,4 @@
-package homework;
+package homework.chapter4;
 
 public class Matrix {
     public static void main(String[] args) {

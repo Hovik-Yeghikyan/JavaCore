@@ -1,4 +1,4 @@
-package homework;
+package homework.chapter4;
 
 public class IncDec {
     public static void main(String[] args) {
