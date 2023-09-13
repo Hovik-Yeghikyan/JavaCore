@@ -1,4 +1,4 @@
-package homework.chapter6.arrayUtil;
+package homework.chapter6.arrayutil;
 
 public class ArrayUtilTest {
     public static void main(String[] args) {

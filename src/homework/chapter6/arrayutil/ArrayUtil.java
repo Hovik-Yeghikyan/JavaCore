@@ -1,4 +1,4 @@
-package homework.chapter6.arrayUtil;
+package homework.chapter6.arrayutil;
 
 public class ArrayUtil {
     int[] numbers = {1, 6, 3, 9, 15, 52, -3, 5, 8};
