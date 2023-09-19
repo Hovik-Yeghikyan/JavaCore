@@ -1,4 +1,4 @@
-package homework.chapter6;
+package homework.chapter6.box;
 
 public class Box2 {
     double width;

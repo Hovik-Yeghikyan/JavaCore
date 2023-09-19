@@ -1,4 +1,4 @@
-package homework.chapter6;
+package homework.chapter6.box;
 
 public class BoxDemo3 {
     public static void main(String[] args) {

@@ -1,9 +1,11 @@
-package homework.chapter6;
+package homework.chapter6.box;
 
 public class Box {
     double width;
     double height;
     double depth;
+
+
 
     void volume() {
         System.out.println("volume is: " + width * height * depth);
