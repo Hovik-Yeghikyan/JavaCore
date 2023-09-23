@@ -29,16 +29,26 @@ public class DynamicArrayDemo {
         myArray.add(122);
 
 
-        System.out.println(myArray.getByArray(11));
-        System.out.println(myArray.getByArray(0));
-        System.out.println(myArray.getByArray(9));
-        System.out.println(myArray.getByArray(8));
-        System.out.println(myArray.getByArray(5));
-        System.out.println(myArray.getByArray(17));
-        System.out.println(myArray.getByArray(20));
-        System.out.println();
-        System.out.println(myArray.getByArray(96));
-        System.out.println();
+        System.out.println(myArray.getByIndex(11));
+        System.out.println(myArray.getByIndex(0));
+        System.out.println(myArray.getByIndex(96));
         myArray.print();
+        myArray.deleteByIndex(3);
+        myArray.print();
+        myArray.deleteByIndex(0);
+        myArray.print();
+        myArray.deleteByIndex(10);
+        myArray.print();
+        myArray.set(11, 325);
+        myArray.print();
+        myArray.add(5, 744);
+        myArray.print();
+        myArray.add(87, 1670);
+        System.out.println(myArray.exists(925));
+        System.out.println(myArray.exists(1236));
+        System.out.println(myArray.getIndexByValue(77));
+        System.out.println(myArray.getIndexByValue(155));
+        System.out.println(myArray.getIndexByValue(4125));
+
     }
 }
