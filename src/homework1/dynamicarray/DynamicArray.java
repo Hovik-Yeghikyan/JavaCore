@@ -43,11 +43,12 @@ public class DynamicArray {
             for (int i = index; i < size; i++) {
 
                 array[i] = array[i + 1];
+                size--;
             }
         } else {
             System.out.println("incurrect index");
         }
-        size--;
+
     }
 
     public void set(int index, int value) {

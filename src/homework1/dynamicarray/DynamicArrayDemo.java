@@ -38,7 +38,6 @@ public class DynamicArrayDemo {
         myArray.deleteByIndex(0);
         myArray.print();
         myArray.deleteByIndex(10);
-        myArray.print();
         myArray.set(11, 325);
         myArray.print();
         myArray.add(5, 744);
