@@ -2,7 +2,7 @@ package homework1.bracechecker;
 
 public class Stack {
     private int[] array = new int[10];
-    public int index;
+    private int index;
 
 
     public Stack() {
@@ -25,8 +25,8 @@ public class Stack {
         }
     }
 
-    public int lastchar() {
-        return array[index];
+    public int getIndex() {
+        return index;
     }
 
 }

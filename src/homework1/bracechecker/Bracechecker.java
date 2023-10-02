@@ -2,15 +2,20 @@ package homework1.bracechecker;
 
 public class Bracechecker {
     private String text;
+    private char c;
+
 
     Bracechecker(String sentence) {
         text = sentence;
+
+
     }
 
     public void check() {
         Stack stk = new Stack();
+        int pop;
         for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
+            c = text.charAt(i);
             switch (c) {
                 case '[':
                 case '{':
@@ -18,61 +23,37 @@ public class Bracechecker {
                     stk.push(c);
                     break;
                 case ']':
-                    if (stk.index == -1) {
-                        System.out.println("Error:closed ] at " + i);
-                        break;
+                    pop = stk.pop();
+                    if (pop == 0) {
+                        System.out.println("Error: " + c + " closed, but not opened " + i);
+                    } else if (pop != '[') {
+                        System.out.println("Error: " + c + " closed.but opened " + (char) pop + " at " + i);
                     }
-                    if (stk.lastchar() == '[') {
-                        stk.pop();
-                        break;
-                    }
-                    if (stk.lastchar() == '{') {
-                        System.out.println("Error: opened { but closed at ] " + i);
-                        break;
-                    }
-                    if (stk.lastchar() == '(') {
-                        System.out.println("Error: opened ( but closed at ] " + i);
-                        break;
-                    }
-
+                    break;
                 case '}':
-                    if (stk.index == -1) {
-                        System.out.println("Error: closed } at " + i);
-                        break;
+                    pop = stk.pop();
+                    if (pop == 0) {
+                        System.out.println("Error: " + c + " closed, but not opened " + i);
+                    } else if (pop != '{') {
+                        System.out.println("Error: " + c + " closed.but opened " + (char) pop + " at " + i);
                     }
-                    if (stk.lastchar() == '{') {
-                        stk.pop();
-                        break;
-                    }
-                    if (stk.lastchar() == '[') {
-                        System.out.println("Error: opened [ but closed at } " + i);
-                        break;
-                    }
-                    if (stk.lastchar() == '(') {
-                        System.out.println("Error: opened ( but closed at } " + i);
-                        break;
-                    }
-
-
+                    break;
                 case ')':
-                    if (stk.index == -1) {
-                        System.out.println("Error: closed ) at " + i);
-                        break;
+                    pop = stk.pop();
+                    if (pop == 0) {
+                        System.out.println("Error: " + c + " closed, but not opened " + i);
+                    } else if (pop != '(') {
+                        System.out.println("Error: " + c + " closed.but opened " + (char) pop + " at " + i);
                     }
-                    if (stk.lastchar() == '(') {
-                        stk.pop();
-                        break;
-                    }
-                    if (stk.lastchar() == '[') {
-                        System.out.println("Error: opened [ but closed at ) " + i);
-                        break;
-                    }
-                    if (stk.lastchar() == '{') {
-                        System.out.println("Error: opened { but closed at ) " + i);
-                        break;
-                    }
+                    break;
             }
+        }
+        while (stk.getIndex()!=-1){
+            System.out.println("Error: Opened " + (char)stk.pop() + " but not closed");
         }
     }
 }
+
+
+
 
