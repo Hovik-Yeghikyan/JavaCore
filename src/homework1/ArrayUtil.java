@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class ArrayUtil {
     public static void main(String[] args) {
-        int[] numbers = {1,6,3,9,15,52,-3,5,8};
+        int[] numbers = {1, 6, 3, 9, 15, 52, -3, 5, 8};
         int j = 0, x = 0, y = 0, z = 0;
         int min = numbers[0];
         double result;
@@ -49,5 +49,15 @@ public class ArrayUtil {
         System.out.println("total sum is " + z);
         result = z / numbers.length;
         System.out.println("average is " + result);
+    }
+
+    public static int max(int[] array) {
+        int max = array[0];
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] > max) {
+                max = array[i];
+            }
+        }
+        return max;
     }
 }
