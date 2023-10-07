@@ -6,12 +6,12 @@ public class Employee {
     private String employeeID;
     private double salary;
     private String company;
-    private int position;
+    private String position;
 
     public Employee() {
     }
 
-    public Employee(String name, String surname, String employeeID, double salary, String company, int position) {
+    public Employee(String name, String surname, String employeeID, double salary, String company, String position) {
         this.name = name;
         this.surname = surname;
         this.employeeID = employeeID;
@@ -60,11 +60,24 @@ public class Employee {
         this.company = company;
     }
 
-    public int getPosition() {
+    public String getPosition() {
         return position;
     }
 
-    public void setPosition(int position) {
+    public void setPosition(String position) {
         this.position = position;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", employeeID='" + employeeID + '\'' +
+                ", salary=" + salary +
+                ", company='" + company + '\'' +
+                ", position=" + position +
+                '}';
     }
 }
