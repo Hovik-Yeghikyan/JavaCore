@@ -45,64 +45,16 @@ public class EmployeeStorage {
         size--;
     }
 
-    public void changeEmplByID(String keyword3) {
-        for (int i = 0; i < size; i++) {
-            if (keyword3.equals(employees[i].getEmployeeID())) {
-                Scanner scanner = new Scanner(System.in);
-                boolean run = true;
-                while (run) {
-                    System.out.println("Please input 0 for RETURN TO MAIN MENU");
-                    System.out.println("Please input 1 for CHANGE NAME");
-                    System.out.println("Please input 2 for CHANGE SURNAME");
-                    System.out.println("Please input 3 for CHANGE EMPLOYEE ID");
-                    System.out.println("Please input 4 for CHANGE SALARY");
-                    System.out.println("Please input 5 CHANGE COMPANY");
-                    System.out.println("Please input 6 for CHANGE POSITION");
-                    String option = scanner.nextLine();
 
-                    switch (option) {
-                        case "0":
-                            System.out.println("Employee CHANGED");
-                            run = false;
-                            break;
-                        case "1":
-                            System.out.println("Please input new name");
-                            String keyword4 = scanner.nextLine();
-                            employees[i].setName(keyword4);
-                            break;
-                        case "2":
-                            System.out.println("Please input new surname");
-                            String keyword5 = scanner.nextLine();
-                            employees[i].setSurname(keyword5);
-                            break;
-                        case "3":
-                            System.out.println("Please input new employeeID");
-                            String keyword6 = scanner.nextLine();
-                            employees[i].setEmployeeID(keyword6);
-                            break;
-                        case "4":
-                            System.out.println("Please input new salary");
-                            double keyword7 = Double.parseDouble(scanner.nextLine());
-                            employees[i].setSalary(keyword7);
-                            break;
-                        case "5":
-                            System.out.println("Please input new company");
-                            String keyword8 = scanner.nextLine();
-                            employees[i].setCompany(keyword8);
-                            break;
-                        case "6":
-                            System.out.println("Please input new position");
-                            String keyword9 = scanner.nextLine();
-                            employees[i].setPosition(keyword9);
-                            break;
-                        default:
-                            System.out.println("Invalid command. Try Again! ");
-                            break;
-                    }
-                }
+    public Employee changeEmplByID(String employeeId) {
+        for (int i = 0; i < size; i++) {
+            if (employeeId.equals(employees[i].getEmployeeID())) {
+                return employees[i];
             }
         }
+        return null;
     }
+
 
     private void extend() {
         Employee[] temp = new Employee[employees.length + 10];
