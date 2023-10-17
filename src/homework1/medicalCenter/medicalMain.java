@@ -4,43 +4,46 @@ import homework1.medicalCenter.model.Doctor;
 import homework1.medicalCenter.model.Patient;
 import homework1.medicalCenter.storage.DoctorStorage;
 import homework1.medicalCenter.storage.PatientStorage;
+import homework1.medicalCenter.util.DateUtil;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.Scanner;
 
-public class medicalMain {
+public class medicalMain implements Commands{
     private static Scanner scanner = new Scanner(System.in);
     private static DoctorStorage doctorFromStorage = new DoctorStorage();
     private static PatientStorage patientFromStorage = new PatientStorage();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
 
         boolean isRun = true;
         while (isRun) {
-            printAllCommands();
+            Commands.printAllCommands();
             String command = scanner.nextLine();
             switch (command) {
-                case "0":
+                case EXIT:
                     isRun = false;
                     break;
-                case "1":
+                case ADD_DOCTOR:
                     addDoctor();
                     break;
-                case "2":
+                case SEARCH_DOCTOR_BY_PROFESSION:
                     searchDoctorByProfession();
                     break;
-                case "3":
+                case DELETE_DOCTOR_BY_ID:
                     deleteDoctorById();
                     break;
-                case "4":
+                case CHANGE_DOCTOR_BY_ID:
                     changeDoctorById();
                     break;
-                case "5":
+                case ADD_PATIENT:
                     addPatient();
                     break;
-                case "6":
+                case PRINT_ALL_PATIENTS_BY_DOCTOR:
                     printPatientsByDoctor();
                     break;
-                case "7":
+                case PRINT_ALL_PATIENTS:
                     patientFromStorage.print();
                     break;
                 default:
@@ -63,7 +66,7 @@ public class medicalMain {
         patientFromStorage.printByDoctor(doctor);
     }
 
-    private static void addPatient() {
+    private static void addPatient() throws ParseException {
         doctorFromStorage.print();
         System.out.println("Please choose the ID of the doctor for add patient");
         String doctorId = scanner.nextLine();
@@ -88,8 +91,9 @@ public class medicalMain {
         String surname = scanner.nextLine();
         System.out.println("Please input patient PHONE");
         String phone = scanner.nextLine();
-        System.out.println("Please input register date and time");
-        String registerDateTime = scanner.nextLine();
+        System.out.println("Please input register date and time (dd-MM-yyyy hh:mm)");
+        String registerDateTimeStr = scanner.nextLine();
+        Date registerDateTime = DateUtil.stringToDateTime(registerDateTimeStr);
         Patient patient = new Patient(name, surname, phone, patientId, registerDateTime, doctor);
         patientFromStorage.add(patient);
         System.out.println("Patient created!");
@@ -177,14 +181,4 @@ public class medicalMain {
 
     }
 
-    private static void printAllCommands() {
-        System.out.println("Please input 0 for EXIT");
-        System.out.println("Please input 1 for ADD_DOCTOR");
-        System.out.println("Please input 2 for SEARCH_DOCTOR_BY_PROFESSION");
-        System.out.println("Please input 3 for DELETE_DOCTOR_BY_ID");
-        System.out.println("Please input 4 for CHANGE_DOCTOR_BY_ID");
-        System.out.println("Please input 5 for ADD_PATIENT");
-        System.out.println("Please input 6 for PRINT_ALL_PATIENTS_BY_DOCTOR");
-        System.out.println("Please input 7 for PRINT_ALL_PATIENTS");
-    }
 }
