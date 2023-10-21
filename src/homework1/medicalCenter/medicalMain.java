@@ -10,12 +10,12 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Scanner;
 
-public class medicalMain implements Commands{
+public class medicalMain implements Commands {
     private static Scanner scanner = new Scanner(System.in);
     private static DoctorStorage doctorFromStorage = new DoctorStorage();
     private static PatientStorage patientFromStorage = new PatientStorage();
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) {
 
         boolean isRun = true;
         while (isRun) {
@@ -66,7 +66,7 @@ public class medicalMain implements Commands{
         patientFromStorage.printByDoctor(doctor);
     }
 
-    private static void addPatient() throws ParseException {
+    private static void addPatient() {
         doctorFromStorage.print();
         System.out.println("Please choose the ID of the doctor for add patient");
         String doctorId = scanner.nextLine();
@@ -93,7 +93,14 @@ public class medicalMain implements Commands{
         String phone = scanner.nextLine();
         System.out.println("Please input register date and time (dd-MM-yyyy hh:mm)");
         String registerDateTimeStr = scanner.nextLine();
-        Date registerDateTime = DateUtil.stringToDateTime(registerDateTimeStr);
+        Date registerDateTime = null;
+        try {
+            registerDateTime = DateUtil.stringToDateTime(registerDateTimeStr);
+        } catch (ParseException e) {
+            System.out.println("date is incorrect!");
+            return;
+        }
+
         Patient patient = new Patient(name, surname, phone, patientId, registerDateTime, doctor);
         patientFromStorage.add(patient);
         System.out.println("Patient created!");
@@ -148,7 +155,7 @@ public class medicalMain implements Commands{
         System.out.println("Please input doctors profession");
         String profession = scanner.nextLine();
 
-        if(doctorFromStorage.searchDoctorByProfession(profession)==null){
+        if (doctorFromStorage.searchDoctorByProfession(profession) == null) {
             System.out.println("Doctor with this profession does not exist!");
             return;
         }

@@ -3,6 +3,8 @@ package homework1.medicalCenter.storage;
 import homework1.medicalCenter.model.Doctor;
 import homework1.medicalCenter.model.Patient;
 
+import java.util.Date;
+
 public class PatientStorage {
 
     private Patient[] patients = new Patient[10];
