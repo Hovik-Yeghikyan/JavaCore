@@ -11,13 +11,18 @@ public abstract class DateUtil {
 
     public static Date stringToDate(String dateStr) throws ParseException {
         return SDF.parse(dateStr);
-    }public static Date stringToDateTime(String dateTimeStr) throws ParseException {
+    }
+
+    public static Date stringToDateTime(String dateTimeStr) throws ParseException {
         return SDF_TIME.parse(dateTimeStr);
     }
 
     public static String dateToString(Date date) {
         return SDF.format(date);
-    } public static String dateTimeToString(Date date) {
+    }
+
+    public static String dateTimeToString(Date date) {
+
         return SDF_TIME.format(date);
     }
 

@@ -2,18 +2,17 @@ package homework1.medicalCenter;
 
 import homework1.medicalCenter.model.Doctor;
 import homework1.medicalCenter.model.Patient;
-import homework1.medicalCenter.storage.DoctorStorage;
-import homework1.medicalCenter.storage.PatientStorage;
+
+import homework1.medicalCenter.storage.PersonStorage;
 import homework1.medicalCenter.util.DateUtil;
 
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Scanner;
 
-public class medicalMain implements Commands {
+public class MedicalMain2 implements Commands {
     private static Scanner scanner = new Scanner(System.in);
-    private static DoctorStorage doctorFromStorage = new DoctorStorage();
-    private static PatientStorage patientFromStorage = new PatientStorage();
+private static PersonStorage personFromStorage = new PersonStorage();
 
     public static void main(String[] args) {
 
@@ -44,7 +43,7 @@ public class medicalMain implements Commands {
                     printPatientsByDoctor();
                     break;
                 case PRINT_ALL_PATIENTS:
-                    patientFromStorage.print();
+                    personFromStorage.printPatients();
                     break;
                 default:
                     System.out.println("Invalid command. Try again!");
@@ -54,32 +53,32 @@ public class medicalMain implements Commands {
     }
 
     private static void printPatientsByDoctor() {
-        doctorFromStorage.print();
+        personFromStorage.printDoctors();
         System.out.println("Please choose the ID of the doctor for print doctors patient");
         String doctorId = scanner.nextLine();
-        doctorFromStorage.getDocID(doctorId);
-        Doctor doctor = doctorFromStorage.getDocID(doctorId);
+        personFromStorage.getDocID(doctorId);
+        Doctor doctor = personFromStorage.getDocID(doctorId);
         if (doctor == null) {
             System.out.println("Wrong ID,please try again!");
             return;
         }
-        patientFromStorage.printByDoctor(doctor);
+        personFromStorage.printPatientByDoctor(doctor);
     }
 
     private static void addPatient() {
-        doctorFromStorage.print();
+        personFromStorage.printDoctors();
         System.out.println("Please choose the ID of the doctor for add patient");
         String doctorId = scanner.nextLine();
-        doctorFromStorage.getDocID(doctorId);
-        Doctor doctor = doctorFromStorage.getDocID(doctorId);
+        personFromStorage.getDocID(doctorId);
+        Doctor doctor = personFromStorage.getDocID(doctorId);
         if (doctor == null) {
             System.out.println("Wrong ID,please try again!");
             return;
         }
         System.out.println("Please input patient id");
         String patientId = scanner.nextLine();
-        patientFromStorage.getPatID(patientId);
-        Patient ptf = patientFromStorage.getPatID(patientId);
+       personFromStorage.getPatID(patientId);
+        Patient ptf = personFromStorage.getPatID(patientId);
         if (ptf != null) {
             System.out.println("patient is already exists!!!");
             return;
@@ -102,18 +101,18 @@ public class medicalMain implements Commands {
         }
 
         Patient patient = new Patient(name, surname, phone, patientId, registerDateTime, doctor);
-        patientFromStorage.add(patient);
+        personFromStorage.add(patient);
         System.out.println("Patient created!");
 
 
     }
 
     private static void changeDoctorById() {
-        doctorFromStorage.print();
+        personFromStorage.printDoctors();
         System.out.println("Please enter the ID of the doctor you want to change");
         String doctorId = scanner.nextLine();
-        doctorFromStorage.getDocID(doctorId);
-        Doctor doctor = doctorFromStorage.getDocID(doctorId);
+        personFromStorage.getDocID(doctorId);
+        Doctor doctor = personFromStorage.getDocID(doctorId);
         if (doctor == null) {
             System.out.println("Wrong ID,please try again!");
             return;
@@ -139,13 +138,13 @@ public class medicalMain implements Commands {
     }
 
     private static void deleteDoctorById() {
-        doctorFromStorage.print();
+        personFromStorage.printDoctors();
         System.out.println("Please enter the ID of the doctor you want to delete");
         String id = scanner.nextLine();
-        Doctor doctor = doctorFromStorage.getDocID(id);
-        doctorFromStorage.deleteDocById(id);
-        while (patientFromStorage.searchForDelete(doctor) != null) {
-            patientFromStorage.deletePatById(doctor);
+        Doctor doctor = personFromStorage.getDocID(id);
+        personFromStorage.deleteDocById(id);
+        while (personFromStorage.searchForDelete(doctor) != null) {
+           personFromStorage.deletePatById(doctor);
 
         }
         System.out.println("Doctor with patients deleted");
@@ -155,18 +154,18 @@ public class medicalMain implements Commands {
         System.out.println("Please input doctors profession");
         String profession = scanner.nextLine();
 
-        if (doctorFromStorage.searchDoctorByProfession(profession) == null) {
+        if (personFromStorage.searchDoctorByProfession(profession) == null) {
             System.out.println("Doctor with this profession does not exist!");
             return;
         }
-        System.out.println(doctorFromStorage.searchDoctorByProfession(profession));
+        System.out.println(personFromStorage.searchDoctorByProfession(profession));
     }
 
     private static void addDoctor() {
         System.out.println("Please input doctor ID");
         String id = scanner.nextLine();
-        doctorFromStorage.getDocID(id);
-        Doctor doctorId = doctorFromStorage.getDocID(id);
+        personFromStorage.getDocID(id);
+        Doctor doctorId = personFromStorage.getDocID(id);
         if (doctorId != null) {
             System.out.println("Doctor with this ID is already exists");
             return;
@@ -182,7 +181,7 @@ public class medicalMain implements Commands {
         System.out.println("Please input PROFESSION");
         String profession = scanner.nextLine();
         Doctor doctor = new Doctor(name, surname, phone, id, profession, email);
-        doctorFromStorage.add(doctor);
+        personFromStorage.add(doctor);
         System.out.println("Doctor created!");
 
 
