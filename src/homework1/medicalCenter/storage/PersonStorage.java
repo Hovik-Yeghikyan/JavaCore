@@ -1,5 +1,6 @@
 package homework1.medicalCenter.storage;
 
+import homework1.medicalCenter.exception.PersonNotFoundException;
 import homework1.medicalCenter.model.Doctor;
 import homework1.medicalCenter.model.Patient;
 import homework1.medicalCenter.model.Person;
@@ -32,7 +33,7 @@ public class PersonStorage {
         }
     }
 
-    public Person searchDoctorByProfession(String profession) {
+    public Person searchDoctorByProfession(String profession) throws PersonNotFoundException {
         for (int i = 0; i < size; i++) {
             if (people[i] instanceof Doctor doctor) {
                 if (doctor.getProfession().equals(profession)) {
@@ -40,7 +41,7 @@ public class PersonStorage {
                 }
             }
         }
-        return null;
+        throw new PersonNotFoundException("Doctor with profession " + profession + " does not found");
     }
 
     public void deleteDocById(String doctorId) {
@@ -52,14 +53,14 @@ public class PersonStorage {
         }
     }
 
-    public Doctor getDocID(String doctorId) {
+    public Doctor getDocID(String doctorId)  {
         for (int i = 0; i < size; i++) {
             if (people[i] instanceof Doctor doctor && doctor.getId().equals(doctorId)) {
 
                 return doctor;
             }
         }
-        return null;
+        return  null;
     }
 
     private void getDocIndex(int i) {
@@ -114,17 +115,18 @@ public class PersonStorage {
         return -1;
     }
 
-    public Patient getPatID(String patientId) {
+    public Patient getPatID(String patientId) throws PersonNotFoundException {
         for (int i = 0; i < size; i++) {
             if (people[i] instanceof Patient patient) {
                 if (patient.getId().equals(patientId)) {
-                    return patient;
+                  throw  new PersonNotFoundException("Patient with id " + patientId +
+                          " is already exists!!!");
                 }
             }
+
         }
         return null;
     }
-
 
     private void extand() {
         Person[] temp = new Person[people.length + 10];
@@ -133,13 +135,3 @@ public class PersonStorage {
     }
 
 }
-
-
-
-
-
-
-
-
-
-

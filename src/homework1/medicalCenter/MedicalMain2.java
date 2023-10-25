@@ -1,5 +1,6 @@
 package homework1.medicalCenter;
 
+import homework1.medicalCenter.exception.PersonNotFoundException;
 import homework1.medicalCenter.model.Doctor;
 import homework1.medicalCenter.model.Patient;
 
@@ -12,7 +13,7 @@ import java.util.Scanner;
 
 public class MedicalMain2 implements Commands {
     private static Scanner scanner = new Scanner(System.in);
-private static PersonStorage personFromStorage = new PersonStorage();
+    private static PersonStorage personFromStorage = new PersonStorage();
 
     public static void main(String[] args) {
 
@@ -77,10 +78,10 @@ private static PersonStorage personFromStorage = new PersonStorage();
         }
         System.out.println("Please input patient id");
         String patientId = scanner.nextLine();
-       personFromStorage.getPatID(patientId);
-        Patient ptf = personFromStorage.getPatID(patientId);
-        if (ptf != null) {
-            System.out.println("patient is already exists!!!");
+        try {
+            personFromStorage.getPatID(patientId);
+        } catch (PersonNotFoundException e) {
+            System.out.println(e.getMessage());
             return;
         }
 
@@ -144,7 +145,7 @@ private static PersonStorage personFromStorage = new PersonStorage();
         Doctor doctor = personFromStorage.getDocID(id);
         personFromStorage.deleteDocById(id);
         while (personFromStorage.searchForDelete(doctor) != null) {
-           personFromStorage.deletePatById(doctor);
+            personFromStorage.deletePatById(doctor);
 
         }
         System.out.println("Doctor with patients deleted");
@@ -154,11 +155,12 @@ private static PersonStorage personFromStorage = new PersonStorage();
         System.out.println("Please input doctors profession");
         String profession = scanner.nextLine();
 
-        if (personFromStorage.searchDoctorByProfession(profession) == null) {
-            System.out.println("Doctor with this profession does not exist!");
-            return;
+        try {
+            personFromStorage.searchDoctorByProfession(profession);
+            System.out.println(personFromStorage.searchDoctorByProfession(profession));
+        } catch (PersonNotFoundException e) {
+            System.out.println(e.getMessage());
         }
-        System.out.println(personFromStorage.searchDoctorByProfession(profession));
     }
 
     private static void addDoctor() {
