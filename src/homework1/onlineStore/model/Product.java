@@ -2,6 +2,8 @@ package homework1.onlineStore.model;
 
 import homework1.onlineStore.types.ProductType;
 
+import java.util.Objects;
+
 public class Product {
 
     private String id;
@@ -92,9 +94,9 @@ public class Product {
 
         if (Double.compare(price, product.price) != 0) return false;
         if (stockQty != product.stockQty) return false;
-        if (!id.equals(product.id)) return false;
-        if (!name.equals(product.name)) return false;
-        if (!description.equals(product.description)) return false;
+        if (!Objects.equals(id, product.id)) return false;
+        if (!Objects.equals(name, product.name)) return false;
+        if (!Objects.equals(description, product.description)) return false;
         return type == product.type;
     }
 
@@ -102,13 +104,13 @@ public class Product {
     public int hashCode() {
         int result;
         long temp;
-        result = id.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + description.hashCode();
+        result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
         temp = Double.doubleToLongBits(price);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + stockQty;
-        result = 31 * result + type.hashCode();
+        result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
     }
 }

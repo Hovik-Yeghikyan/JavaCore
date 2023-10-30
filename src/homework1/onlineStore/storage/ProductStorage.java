@@ -10,12 +10,14 @@ public class ProductStorage {
 
     public void add(Product product) {
         if (size == products.length) {
-            extand();
+            extend();
         }
         products[size++] = product;
     }
 
-    private void extand() {
+
+
+    private void extend() {
 
         Product[] temp = new Product[products.length+ 10];
         System.arraycopy(products, 0, temp, 0, products.length);
