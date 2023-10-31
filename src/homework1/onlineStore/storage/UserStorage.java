@@ -15,6 +15,14 @@ public class UserStorage {
         users[size++] = user;
     }
 
+    public void printOnlyUsers() {
+        for (int i = 0; i < size; i++) {
+            if (users[i].getType() == UserType.USER) {
+                System.out.println(users[i]);
+            }
+        }
+    }
+
     public User getUserEmail(String email) {
         for (int i = 0; i < size; i++) {
             if (users[i].getEmail().equals(email)) {
@@ -24,11 +32,27 @@ public class UserStorage {
         return null;
     }
 
-    public User getUserEmailAndPassword(String email, String password) {
+    public User getUserById(String id) {
         for (int i = 0; i < size; i++) {
-            if (users[i].getEmail().equals(email)&&users[i].getPassword().equals(password)) {
+            if (users[i].getId().equals(id)) {
                 return users[i];
             }
+        }
+        return null;
+    }
+
+    public User getUserEmailAndPassword(String email, String password) {
+        for (int i = 0; i < size; i++) {
+            if (users[i].getEmail().equals(email) && users[i].getPassword().equals(password)) {
+                return users[i];
+            }
+        }
+        return null;
+    }
+
+    public UserType getUserAndAdminType(String type) {
+        if (type.equals(UserType.ADMIN.name()) || type.equals(UserType.USER.name())) {
+            return UserType.valueOf(type);
         }
         return null;
     }
