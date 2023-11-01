@@ -97,6 +97,20 @@ public class Order {
     }
 
     @Override
+    public String toString() {
+        return
+                "user='" + user + '\'' +
+                        "Order{" + ", id=" + id +
+                ", product='" + product + '\'' +
+                ", date=" + date +
+                ", price=" + price +
+                ", orderStatus=" + orderStatus +
+                ", qty=" + qty +
+                ", paymentMethod=" + paymentMethod +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

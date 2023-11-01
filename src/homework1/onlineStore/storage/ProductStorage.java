@@ -1,5 +1,6 @@
 package homework1.onlineStore.storage;
 
+import homework1.onlineStore.exception.OutOfStockException;
 import homework1.onlineStore.model.Product;
 import homework1.onlineStore.model.User;
 import homework1.onlineStore.types.ProductType;
@@ -59,6 +60,15 @@ public class ProductStorage {
             return ProductType.valueOf(type);
         }
         return null;
+    }
+
+    public int getQty(String id, int qty) throws OutOfStockException {
+        for (int i = 0; i < size; i++) {
+            if (products[i].getId().equals(id) && products[i].getStockQty() >= qty) {
+                return products[i].getStockQty();
+            }
+        }
+        throw new OutOfStockException("You cant order product in this qty!!!");
     }
 
 

@@ -41,6 +41,7 @@ public class UserStorage {
         return null;
     }
 
+
     public User getUserEmailAndPassword(String email, String password) {
         for (int i = 0; i < size; i++) {
             if (users[i].getEmail().equals(email) && users[i].getPassword().equals(password)) {
@@ -53,6 +54,15 @@ public class UserStorage {
     public UserType getUserAndAdminType(String type) {
         if (type.equals(UserType.ADMIN.name()) || type.equals(UserType.USER.name())) {
             return UserType.valueOf(type);
+        }
+        return null;
+    }
+
+    public String getIdUser(User user){
+        for (int i = 0; i < size; i++) {
+            if (users[i].equals(user)){
+                return users[i].getId();
+            }
         }
         return null;
     }

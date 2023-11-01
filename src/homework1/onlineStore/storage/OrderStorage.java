@@ -22,6 +22,7 @@ public class OrderStorage {
         }
     }
 
+
     public PaymentMethod getOrderType(String type) {
         if (type.equals(PaymentMethod.CARD.name()) ||
                 type.equals(PaymentMethod.CASH.name()) || type.equals(PaymentMethod.PAYPAL.name())) {
@@ -37,6 +38,9 @@ public class OrderStorage {
         }
         return null;
     }
+
+
+
 
     private void extend() {
 

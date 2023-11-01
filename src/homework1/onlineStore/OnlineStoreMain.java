@@ -1,6 +1,7 @@
 package homework1.onlineStore;
 
 import homework1.onlineStore.commands.Commands;
+import homework1.onlineStore.exception.OutOfStockException;
 import homework1.onlineStore.model.Order;
 import homework1.onlineStore.model.Product;
 import homework1.onlineStore.storage.OrderStorage;
@@ -66,6 +67,7 @@ public class OnlineStoreMain implements Commands {
                     break;
                 }
                 case PRINT_MY_ORDERS: {
+                    printMyOrders();
                     break;
                 }
                 case CANCEL_ORDER_BY_ID: {
@@ -73,69 +75,16 @@ public class OnlineStoreMain implements Commands {
                 }
                 default: {
                     System.out.println("WRONG COMMAND! TRY AGAIN!");
-                    userMenu();
+                    break;
                 }
             }
         }
     }
 
-    private static void byProduct() {
-        String id = UUIDUtil.generateUUID();
-        productStorage.printProducts();
-        System.out.println("Please input product id you want to BUY");
-        String productId = scanner.nextLine();
-        Product product = productStorage.getProductById(productId);
-        if (product == null) {
-            System.out.println("Product not found.Input correct product ID!!!");
-            return;
-        }
-
-        System.out.println("Please input qty");
-        int qty = Integer.parseInt(scanner.nextLine());
-        if (qty <= 0 && qty > product.getStockQty()) {
-            System.out.println("Incorrect product qty!!!Try again!!!");
-            return;
-        }
-        System.out.println("Please input the payment method CARD, CASH OR PAYPAL");
-        String type = scanner.nextLine().toUpperCase();
-        PaymentMethod type1 = orderStorage.getOrderType(type);
-        if (type1 == null) {
-            System.out.println("You must input only CARD, CASH OR PAYPAL!!!");
-            return;
-        }
-        double price = 0;
-        for (int i = 0; i <= qty + 1; i++) {
-            price = productStorage.getPrice(productId);
-            price = price + price;
-        }
-        System.out.println("do you want to buy this product in such " + qty +
-                " and at such a " + price + " ?");
-        System.out.println("Input YES for confirm, input NO for CANCEL");
-        String answerType = scanner.nextLine().toUpperCase();
-        Answers answerType1 = orderStorage.getAnswerType(answerType);
-        if (answerType1 == null) {
-            System.out.println("You must input only YES OR NO!!!");
-            return;
-        }
-        if (answerType1 == Answers.YES) {
-            System.out.println("Please input your ID to confirm your order");
-            String userId = scanner.nextLine();
-            User user = userStorage.getUserById(userId);
-            if (user == null) {
-                System.out.println("Please input your correct ID");
-                return;
-            }
-            Date date = new Date();
-            Order order = new Order(id, user, productId, date, price, OrderStatus.NEW, qty, type1);
-            orderStorage.add(order);
-            System.out.println(order);
-        }
-        if (answerType1 == Answers.NO) {
-            System.out.println("YOU LOGGED IN AS A USER");
-        }
-
+    private static void printMyOrders() {
 
     }
+
 
     private static void adminMenu() {
 
@@ -177,6 +126,69 @@ public class OnlineStoreMain implements Commands {
                     break;
                 }
             }
+        }
+    }
+
+    private static void byProduct() {
+        String id = UUIDUtil.generateUUID();
+        productStorage.printProducts();
+        System.out.println("Please input product id you want to BUY");
+        String productId = scanner.nextLine();
+        Product product = productStorage.getProductById(productId);
+        if (product == null) {
+            System.out.println("Product not found.Input correct product ID!!!");
+            return;
+        }
+        try {
+            System.out.println("Please input qty");
+            int qty = Integer.parseInt(scanner.nextLine());
+            if (qty <= 0) {
+                System.out.println("Incorrect QTY!!!");
+                return;
+            }
+            try {
+                productStorage.getQty(productId, qty);
+                System.out.println("Please input the payment method CARD, CASH OR PAYPAL");
+                String type = scanner.nextLine().toUpperCase();
+                PaymentMethod type1 = orderStorage.getOrderType(type);
+                if (type1 == null) {
+                    System.out.println("You must input only CARD, CASH OR PAYPAL!!!");
+                    return;
+                }
+                double price = productStorage.getPrice(productId);
+                price = price * qty;
+
+                System.out.println("do you want to buy this product in such " + qty +
+                        " and at such a " + price + " ?");
+                System.out.println("Input YES for confirm, input NO for CANCEL");
+                String answerType = scanner.nextLine().toUpperCase();
+                Answers answerType1 = orderStorage.getAnswerType(answerType);
+                if (answerType1 == null) {
+                    System.out.println("You must input only YES OR NO!!!");
+                    return;
+                }
+                if (answerType1 == Answers.YES) {
+                    System.out.println("Please input your ID to confirm your order");
+                    String userId = scanner.nextLine();
+                    User user = userStorage.getUserById(userId);
+                    if (user == null) {
+                        System.out.println("Please input your correct ID");
+                        return;
+                    }
+                    Date date = new Date();
+                    Order order = new Order(id, user, productId, date, price, OrderStatus.NEW, qty, type1);
+                    orderStorage.add(order);
+                    System.out.println(order);
+                }
+                if (answerType1 == Answers.NO) {
+                    System.out.println("YOUR ORDER IS NOT REGISTERED!");
+                }
+
+            } catch (OutOfStockException e) {
+                System.out.println(e.getMessage());
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Incorrect format for Price/StockQty!!!");
         }
     }
 
@@ -241,6 +253,15 @@ public class OnlineStoreMain implements Commands {
     }
 
     private static void registerUsers() {
+        System.out.println("Please input your id");
+        String id = scanner.nextLine();
+        User userId = userStorage.getUserById(id);
+        {
+            if (userId != null) {
+                System.out.println("This ID is already registered");
+                return;
+            }
+        }
         System.out.println("Please input email");
         String email = scanner.nextLine();
         User user1 = userStorage.getUserEmail(email);
@@ -250,7 +271,7 @@ public class OnlineStoreMain implements Commands {
         }
         System.out.println("Please create password");
         String password = scanner.nextLine();
-        String id = UUIDUtil.generateUUID();
+
         System.out.println("Please input User name");
         String name = scanner.nextLine();
         System.out.println("Please input type: ADMIN OR USER");
