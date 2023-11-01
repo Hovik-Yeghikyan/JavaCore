@@ -71,6 +71,7 @@ public class OnlineStoreMain implements Commands {
                     break;
                 }
                 case CANCEL_ORDER_BY_ID: {
+                    cancelOrderById();
                     break;
                 }
                 default: {
@@ -79,6 +80,24 @@ public class OnlineStoreMain implements Commands {
                 }
             }
         }
+    }
+
+    private static void cancelOrderById() {
+        System.out.println("Please input orderId  you want to CANCEL");
+        String orderID = scanner.nextLine();
+        Order order = orderStorage.getOrderByID(orderID);
+        if (order == null) {
+            System.out.println("Incorrect order ID. Try again!!!");
+        }
+        System.out.println("Please input CANCELED for cancel ");
+        String type = scanner.nextLine().toUpperCase();
+        OrderStatus type1 = orderStorage.getOrderStatusType(type);
+        if (type1 == null) {
+            System.out.println("You must input only CANCELED!!!");
+            return;
+        }
+        order.setOrderStatus(OrderStatus.CANCELED);
+        System.out.println("Order  is cancelled!");
     }
 
     private static void printMyOrders() {
@@ -188,7 +207,7 @@ public class OnlineStoreMain implements Commands {
                 System.out.println(e.getMessage());
             }
         } catch (NumberFormatException e) {
-            System.out.println("Incorrect format for Price/StockQty!!!");
+            System.out.println("Incorrect format for Qty!!!");
         }
     }
 

@@ -2,7 +2,9 @@ package homework1.onlineStore.storage;
 
 import homework1.onlineStore.model.Order;
 import homework1.onlineStore.types.Answers;
+import homework1.onlineStore.types.OrderStatus;
 import homework1.onlineStore.types.PaymentMethod;
+import homework1.onlineStore.types.UserType;
 
 public class OrderStorage {
 
@@ -21,6 +23,24 @@ public class OrderStorage {
             System.out.println(orders[i]);
         }
     }
+
+    public Order getOrderByID(String id){
+        for (int i = 0; i < size; i++) {
+            if (orders[i].getId().equals(id)){
+                return orders[i];
+            }
+        }
+        return null;
+    }
+
+    public OrderStatus getOrderStatusType(String type) {
+        if (OrderStatus.CANCELED.name().equals(type)) {
+            return OrderStatus.valueOf(type);
+        }
+        return null;
+    }
+
+
 
 
     public PaymentMethod getOrderType(String type) {
