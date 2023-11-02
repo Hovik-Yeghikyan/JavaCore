@@ -58,9 +58,9 @@ public class UserStorage {
         return null;
     }
 
-    public String getIdUser(User user){
+    public String getIdUser(User user) {
         for (int i = 0; i < size; i++) {
-            if (users[i].equals(user)){
+            if (users[i].equals(user)) {
                 return users[i].getId();
             }
         }

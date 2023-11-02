@@ -19,6 +19,7 @@ public class OnlineStoreMain implements Commands {
     private static ProductStorage productStorage = new ProductStorage();
     private static UserStorage userStorage = new UserStorage();
     private static OrderStorage orderStorage = new OrderStorage();
+    public static User currentUser = null;
 
     public static void main(String[] args) {
         boolean isRun = true;
@@ -56,6 +57,7 @@ public class OnlineStoreMain implements Commands {
             switch (command) {
                 case LOGOUT: {
                     isRun = false;
+                    currentUser = null;
                     break;
                 }
                 case PRINT_ALL_PRODUCTS: {
@@ -67,7 +69,7 @@ public class OnlineStoreMain implements Commands {
                     break;
                 }
                 case PRINT_MY_ORDERS: {
-                    printMyOrders();
+                    orderStorage.printMyOrders(currentUser);
                     break;
                 }
                 case CANCEL_ORDER_BY_ID: {
@@ -80,28 +82,6 @@ public class OnlineStoreMain implements Commands {
                 }
             }
         }
-    }
-
-    private static void cancelOrderById() {
-        System.out.println("Please input orderId  you want to CANCEL");
-        String orderID = scanner.nextLine();
-        Order order = orderStorage.getOrderByID(orderID);
-        if (order == null) {
-            System.out.println("Incorrect order ID. Try again!!!");
-        }
-        System.out.println("Please input CANCELED for cancel ");
-        String type = scanner.nextLine().toUpperCase();
-        OrderStatus type1 = orderStorage.getOrderStatusType(type);
-        if (type1 == null) {
-            System.out.println("You must input only CANCELED!!!");
-            return;
-        }
-        order.setOrderStatus(OrderStatus.CANCELED);
-        System.out.println("Order  is cancelled!");
-    }
-
-    private static void printMyOrders() {
-
     }
 
 
@@ -137,16 +117,69 @@ public class OnlineStoreMain implements Commands {
                     break;
                 }
                 case CHANGE_ORDER_STATUS: {
+                    changeOrderStatus();
                     break;
                 }
                 default: {
                     System.out.println("WRONG COMMAND! TRY AGAIN!");
-
                     break;
                 }
             }
         }
     }
+
+    private static void changeOrderStatus() {
+        orderStorage.printAllOrders();
+        System.out.println("Please input order id you want to change");
+        String orderId = scanner.nextLine();
+        Order order = orderStorage.getOrderByID(orderId);
+        if (order == null) {
+            System.out.println("Icorrect ID!!! Try again!");
+            return;
+        }
+        System.out.println("Please input order status NEW, DELIVERED or CANCELED");
+        String orderstatus = scanner.nextLine().toUpperCase();
+        OrderStatus orderStatus1 = orderStorage.getOrderStatusType(orderstatus);
+        if (orderStatus1 == null) {
+            System.out.println("You must input only NEW, DELIVERED or CANCELED");
+            return;
+        }
+        if (orderStatus1 == OrderStatus.CANCELED) {
+            order.setOrderStatus(orderStatus1);
+            System.out.println("Order status changed as CANCELED");
+            return;
+        }
+        if (orderStatus1 == OrderStatus.NEW) {
+            order.setOrderStatus(orderStatus1);
+            System.out.println("Order status changed as NEW");
+            return;
+        }
+        if (orderStatus1 == OrderStatus.DELIVERED) {
+            order.setOrderStatus(orderStatus1);
+            String product = order.getProduct();
+            Product product1 = productStorage.getProductById(product);
+            int temp = product1.getStockQty() - order.getQty();
+            product1.setStockQty(temp);
+
+            System.out.println("Product DELIVERED");
+        }
+
+    }
+
+
+    private static void cancelOrderById() {
+        orderStorage.printMyOrders(currentUser);
+        System.out.println("Please input orderId  you want to CANCEL");
+        String orderID = scanner.nextLine();
+        Order order = orderStorage.getOrderByID(orderID);
+        if (order == null) {
+            System.out.println("Incorrect order ID. Try again!!!");
+            return;
+        }
+        order.setOrderStatus(OrderStatus.CANCELED);
+        System.out.println("Order  is cancelled!");
+    }
+
 
     private static void byProduct() {
         String id = UUIDUtil.generateUUID();
@@ -169,7 +202,7 @@ public class OnlineStoreMain implements Commands {
                 productStorage.getQty(productId, qty);
                 System.out.println("Please input the payment method CARD, CASH OR PAYPAL");
                 String type = scanner.nextLine().toUpperCase();
-                PaymentMethod type1 = orderStorage.getOrderType(type);
+                PaymentMethod type1 = orderStorage.getOrderPayType(type);
                 if (type1 == null) {
                     System.out.println("You must input only CARD, CASH OR PAYPAL!!!");
                     return;
@@ -187,15 +220,10 @@ public class OnlineStoreMain implements Commands {
                     return;
                 }
                 if (answerType1 == Answers.YES) {
-                    System.out.println("Please input your ID to confirm your order");
-                    String userId = scanner.nextLine();
-                    User user = userStorage.getUserById(userId);
-                    if (user == null) {
-                        System.out.println("Please input your correct ID");
-                        return;
-                    }
+                    User user = new User();
                     Date date = new Date();
                     Order order = new Order(id, user, productId, date, price, OrderStatus.NEW, qty, type1);
+                    order.setUser(currentUser);
                     orderStorage.add(order);
                     System.out.println(order);
                 }
@@ -223,10 +251,12 @@ public class OnlineStoreMain implements Commands {
         }
         if (user.getType() == UserType.ADMIN) {
             System.out.println("YOU LOGGED IN AS A ADMINISTRATOR");
+            currentUser = user;
             adminMenu();
         }
         if (user.getType() == UserType.USER) {
-            System.out.println("YOU LOGGED IN AS A USER,YOUR ID IS " + user.getId());
+            System.out.println("YOU LOGGED IN AS A USER");
+            currentUser = user;
             userMenu();
         }
     }
@@ -272,8 +302,7 @@ public class OnlineStoreMain implements Commands {
     }
 
     private static void registerUsers() {
-        System.out.println("Please input your id");
-        String id = scanner.nextLine();
+        String id = UUIDUtil.generateUUID();
         User userId = userStorage.getUserById(id);
         {
             if (userId != null) {
@@ -302,7 +331,6 @@ public class OnlineStoreMain implements Commands {
         }
         User user = new User(id, name, email, password, type1);
         userStorage.add(user);
-        System.out.println(user);
         System.out.println("Your account created as " + type1);
     }
 }

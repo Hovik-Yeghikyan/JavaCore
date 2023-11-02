@@ -48,8 +48,6 @@ public class ProductStorage {
                 products[i] = products[i + 1];
                 size--;
                 System.out.println("Product Deleted!");
-            } else {
-                System.out.println("Wrong ID. Try again!!!");
             }
         }
     }

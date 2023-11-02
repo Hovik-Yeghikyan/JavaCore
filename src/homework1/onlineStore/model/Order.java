@@ -101,13 +101,13 @@ public class Order {
         return
                 "user='" + user + '\'' +
                         "Order{" + ", id=" + id +
-                ", product='" + product + '\'' +
-                ", date=" + date +
-                ", price=" + price +
-                ", orderStatus=" + orderStatus +
-                ", qty=" + qty +
-                ", paymentMethod=" + paymentMethod +
-                '}';
+                        ", product='" + product + '\'' +
+                        ", date=" + date +
+                        ", price=" + price +
+                        ", orderStatus=" + orderStatus +
+                        ", qty=" + qty +
+                        ", paymentMethod=" + paymentMethod +
+                        '}';
     }
 
     @Override
