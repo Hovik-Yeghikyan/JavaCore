@@ -220,10 +220,10 @@ public class OnlineStoreMain implements Commands {
                     return;
                 }
                 if (answerType1 == Answers.YES) {
-                    User user = new User();
+                    //User user = new User();
                     Date date = new Date();
-                    Order order = new Order(id, user, productId, date, price, OrderStatus.NEW, qty, type1);
-                    order.setUser(currentUser);
+                    Order order = new Order(id, currentUser, productId, date, price, OrderStatus.NEW, qty, type1);
+                   // order.setUser(currentUser);
                     orderStorage.add(order);
                     System.out.println(order);
                 }
