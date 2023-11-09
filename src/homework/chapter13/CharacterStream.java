@@ -17,6 +17,7 @@ public class CharacterStream {
             for (int i = 0; i < 1000; i++) {
                 bw.write("Hello from Java");
                 bw.newLine();
+                //bw.close();
             }
 
         } catch (IOException e) {
@@ -35,6 +36,7 @@ public class CharacterStream {
             while ((c = bufferedReader.read()) != -1) {
                 System.out.print((char) c);
             }
+
 
         } catch (IOException e) {
             e.printStackTrace();

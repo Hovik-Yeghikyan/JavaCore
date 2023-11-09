@@ -198,7 +198,6 @@ public class OnlineStoreMain implements Commands {
                 System.out.println("Incorrect QTY!!!");
                 return;
             }
-            try {
                 productStorage.getQty(productId, qty);
                 System.out.println("Please input the payment method CARD, CASH OR PAYPAL");
                 String type = scanner.nextLine().toUpperCase();
@@ -230,10 +229,9 @@ public class OnlineStoreMain implements Commands {
                 if (answerType1 == Answers.NO) {
                     System.out.println("YOUR ORDER IS NOT REGISTERED!");
                 }
-
-            } catch (OutOfStockException e) {
+        } catch (OutOfStockException e) {
                 System.out.println(e.getMessage());
-            }
+
         } catch (NumberFormatException e) {
             System.out.println("Incorrect format for Qty!!!");
         }
