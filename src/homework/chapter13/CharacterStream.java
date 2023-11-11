@@ -27,15 +27,15 @@ public class CharacterStream {
 
     public static void read() {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(FILE_PATH))) {
-//            String line = "";
-//            int lineNumber = 1;
-//            while ((line = bufferedReader.readLine()) != null) {
-//              System.out.println(lineNumber++ + " " + line);
-            //       }
-            int c;
-            while ((c = bufferedReader.read()) != -1) {
-                System.out.print((char) c);
-            }
+            String line = "";
+            int lineNumber = 1;
+            while ((line = bufferedReader.readLine()) != null) {
+              System.out.println(lineNumber++ + " " + line);
+                   }
+//            int c;
+//            while ((c = bufferedReader.read()) != -1) {
+//                System.out.print((char) c);
+//            }
 
 
         } catch (IOException e) {
