@@ -6,8 +6,11 @@ import homework1.onlineStore.types.Answers;
 import homework1.onlineStore.types.OrderStatus;
 import homework1.onlineStore.types.PaymentMethod;
 import homework1.onlineStore.types.UserType;
+import homework1.onlineStore.util.StorageSerializeUtil;
 
-public class OrderStorage {
+import java.io.Serializable;
+
+public class OrderStorage implements Serializable {
 
     private Order[] orders = new Order[10];
     private int size;
@@ -17,6 +20,7 @@ public class OrderStorage {
             extend();
         }
         orders[size++] = product;
+        StorageSerializeUtil.serializeOrderStorage(this);
     }
 
     public void printAllOrders() {

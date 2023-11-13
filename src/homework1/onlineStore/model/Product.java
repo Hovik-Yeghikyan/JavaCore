@@ -2,9 +2,10 @@ package homework1.onlineStore.model;
 
 import homework1.onlineStore.types.ProductType;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Product {
+public class Product implements Serializable {
 
     private String id;
     private String name;

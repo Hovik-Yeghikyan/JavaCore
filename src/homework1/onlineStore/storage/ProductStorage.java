@@ -5,8 +5,11 @@ import homework1.onlineStore.model.Product;
 import homework1.onlineStore.model.User;
 import homework1.onlineStore.types.ProductType;
 import homework1.onlineStore.types.UserType;
+import homework1.onlineStore.util.StorageSerializeUtil;
 
-public class ProductStorage {
+import java.io.Serializable;
+
+public class ProductStorage implements Serializable {
 
     private Product[] products = new Product[10];
     private int size;
@@ -16,6 +19,7 @@ public class ProductStorage {
             extend();
         }
         products[size++] = product;
+        StorageSerializeUtil.serializeProductStorage(this);
     }
 
     public void printProducts() {

@@ -52,7 +52,7 @@ public class StorageSerializeUtil {
         return new ProductStorage();
     }
 
-    public static void serializeProductStorage(OrderStorage orderStorage) {
+    public static void serializeOrderStorage(OrderStorage orderStorage) {
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(ORDER_FILE_PATH))) {
             outputStream.writeObject(orderStorage);
         } catch (IOException e) {

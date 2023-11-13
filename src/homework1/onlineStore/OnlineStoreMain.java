@@ -6,6 +6,7 @@ import homework1.onlineStore.model.Order;
 import homework1.onlineStore.model.Product;
 import homework1.onlineStore.storage.OrderStorage;
 import homework1.onlineStore.types.*;
+import homework1.onlineStore.util.StorageSerializeUtil;
 import homework1.onlineStore.util.UUIDUtil;
 import homework1.onlineStore.model.User;
 import homework1.onlineStore.storage.ProductStorage;
@@ -15,17 +16,17 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class OnlineStoreMain implements Commands {
-    private static Scanner scanner = new Scanner(System.in);
-    private static ProductStorage productStorage = new ProductStorage();
-    private static UserStorage userStorage = new UserStorage();
-    private static OrderStorage orderStorage = new OrderStorage();
+    private static final Scanner SCANNER = new Scanner(System.in);
+    private static final ProductStorage PRODUCT_STORAGE = StorageSerializeUtil.deserializeProductStorage();
+    private static final UserStorage USER_STORAGE = StorageSerializeUtil.deserializeUserStorage();
+    private static final OrderStorage ORDER_STORAGE = StorageSerializeUtil.deserializeOrderStorage();
     public static User currentUser = null;
 
     public static void main(String[] args) {
         boolean isRun = true;
         while (isRun) {
             Commands.printLoginCommands();
-            String command = scanner.nextLine();
+            String command = SCANNER.nextLine();
             switch (command) {
                 case EXIT: {
                     isRun = false;
@@ -53,7 +54,7 @@ public class OnlineStoreMain implements Commands {
         boolean isRun = true;
         while (isRun) {
             Commands.printUserCommands();
-            String command = scanner.nextLine();
+            String command = SCANNER.nextLine();
             switch (command) {
                 case LOGOUT: {
                     isRun = false;
@@ -61,7 +62,7 @@ public class OnlineStoreMain implements Commands {
                     break;
                 }
                 case PRINT_ALL_PRODUCTS: {
-                    productStorage.printProducts();
+                    PRODUCT_STORAGE.printProducts();
                     break;
                 }
                 case BUY_PRODUCT: {
@@ -69,7 +70,7 @@ public class OnlineStoreMain implements Commands {
                     break;
                 }
                 case PRINT_MY_ORDERS: {
-                    orderStorage.printMyOrders(currentUser);
+                    ORDER_STORAGE.printMyOrders(currentUser);
                     break;
                 }
                 case CANCEL_ORDER_BY_ID: {
@@ -90,7 +91,7 @@ public class OnlineStoreMain implements Commands {
         boolean isRun = true;
         while (isRun) {
             Commands.printAdminCommands();
-            String commands = scanner.nextLine();
+            String commands = SCANNER.nextLine();
             switch (commands) {
                 case LOGOUT: {
                     isRun = false;
@@ -105,15 +106,15 @@ public class OnlineStoreMain implements Commands {
                     break;
                 }
                 case PRINT_PRODUCTS: {
-                    productStorage.printProducts();
+                    PRODUCT_STORAGE.printProducts();
                     break;
                 }
                 case PRINT_USERS: {
-                    userStorage.printOnlyUsers();
+                    USER_STORAGE.printOnlyUsers();
                     break;
                 }
                 case PRINT_ORDERS: {
-                    orderStorage.printAllOrders();
+                    ORDER_STORAGE.printAllOrders();
                     break;
                 }
                 case CHANGE_ORDER_STATUS: {
@@ -129,17 +130,17 @@ public class OnlineStoreMain implements Commands {
     }
 
     private static void changeOrderStatus() {
-        orderStorage.printAllOrders();
+        ORDER_STORAGE.printAllOrders();
         System.out.println("Please input order id you want to change");
-        String orderId = scanner.nextLine();
-        Order order = orderStorage.getOrderByID(orderId);
+        String orderId = SCANNER.nextLine();
+        Order order = ORDER_STORAGE.getOrderByID(orderId);
         if (order == null) {
-            System.out.println("Icorrect ID!!! Try again!");
+            System.out.println("Incorrect ID!!! Try again!");
             return;
         }
         System.out.println("Please input order status NEW, DELIVERED or CANCELED");
-        String orderstatus = scanner.nextLine().toUpperCase();
-        OrderStatus orderStatus1 = orderStorage.getOrderStatusType(orderstatus);
+        String orderStatus = SCANNER.nextLine().toUpperCase();
+        OrderStatus orderStatus1 = ORDER_STORAGE.getOrderStatusType(orderStatus);
         if (orderStatus1 == null) {
             System.out.println("You must input only NEW, DELIVERED or CANCELED");
             return;
@@ -157,9 +158,11 @@ public class OnlineStoreMain implements Commands {
         if (orderStatus1 == OrderStatus.DELIVERED) {
             order.setOrderStatus(orderStatus1);
             String product = order.getProduct();
-            Product product1 = productStorage.getProductById(product);
+            Product product1 = PRODUCT_STORAGE.getProductById(product);
             int temp = product1.getStockQty() - order.getQty();
             product1.setStockQty(temp);
+           // StorageSerializeUtil.serializeProductStorage(PRODUCT_STORAGE);
+            StorageSerializeUtil.serializeOrderStorage(ORDER_STORAGE);
 
             System.out.println("Product DELIVERED");
         }
@@ -168,62 +171,61 @@ public class OnlineStoreMain implements Commands {
 
 
     private static void cancelOrderById() {
-        orderStorage.printMyOrders(currentUser);
+        ORDER_STORAGE.printMyOrders(currentUser);
         System.out.println("Please input orderId  you want to CANCEL");
-        String orderID = scanner.nextLine();
-        Order order = orderStorage.getOrderByID(orderID);
+        String orderID = SCANNER.nextLine();
+        Order order = ORDER_STORAGE.getOrderByID(orderID);
         if (order == null) {
             System.out.println("Incorrect order ID. Try again!!!");
             return;
         }
         order.setOrderStatus(OrderStatus.CANCELED);
         System.out.println("Order  is cancelled!");
+        StorageSerializeUtil.serializeOrderStorage(ORDER_STORAGE);
     }
 
 
     private static void byProduct() {
         String id = UUIDUtil.generateUUID();
-        productStorage.printProducts();
+        PRODUCT_STORAGE.printProducts();
         System.out.println("Please input product id you want to BUY");
-        String productId = scanner.nextLine();
-        Product product = productStorage.getProductById(productId);
+        String productId = SCANNER.nextLine();
+        Product product = PRODUCT_STORAGE.getProductById(productId);
         if (product == null) {
             System.out.println("Product not found.Input correct product ID!!!");
             return;
         }
         try {
             System.out.println("Please input qty");
-            int qty = Integer.parseInt(scanner.nextLine());
+            int qty = Integer.parseInt(SCANNER.nextLine());
             if (qty <= 0) {
                 System.out.println("Incorrect QTY!!!");
                 return;
             }
-                productStorage.getQty(productId, qty);
+                PRODUCT_STORAGE.getQty(productId, qty);
                 System.out.println("Please input the payment method CARD, CASH OR PAYPAL");
-                String type = scanner.nextLine().toUpperCase();
-                PaymentMethod type1 = orderStorage.getOrderPayType(type);
+                String type = SCANNER.nextLine().toUpperCase();
+                PaymentMethod type1 = ORDER_STORAGE.getOrderPayType(type);
                 if (type1 == null) {
                     System.out.println("You must input only CARD, CASH OR PAYPAL!!!");
                     return;
                 }
-                double price = productStorage.getPrice(productId);
+                double price = PRODUCT_STORAGE.getPrice(productId);
                 price = price * qty;
 
                 System.out.println("do you want to buy this product in such " + qty +
                         " and at such a " + price + " ?");
                 System.out.println("Input YES for confirm, input NO for CANCEL");
-                String answerType = scanner.nextLine().toUpperCase();
-                Answers answerType1 = orderStorage.getAnswerType(answerType);
+                String answerType = SCANNER.nextLine().toUpperCase();
+                Answers answerType1 = ORDER_STORAGE.getAnswerType(answerType);
                 if (answerType1 == null) {
                     System.out.println("You must input only YES OR NO!!!");
                     return;
                 }
                 if (answerType1 == Answers.YES) {
-                    //User user = new User();
                     Date date = new Date();
                     Order order = new Order(id, currentUser, productId, date, price, OrderStatus.NEW, qty, type1);
-                   // order.setUser(currentUser);
-                    orderStorage.add(order);
+                    ORDER_STORAGE.add(order);
                     System.out.println(order);
                 }
                 if (answerType1 == Answers.NO) {
@@ -239,10 +241,10 @@ public class OnlineStoreMain implements Commands {
 
     private static void loginUserAdmin() {
         System.out.println("Please input your email");
-        String email = scanner.nextLine();
+        String email = SCANNER.nextLine();
         System.out.println("Please input your password");
-        String password = scanner.nextLine();
-        User user = userStorage.getUserEmailAndPassword(email, password);
+        String password = SCANNER.nextLine();
+        User user = USER_STORAGE.getUserEmailAndPassword(email, password);
         if (user == null) {
             System.out.println("Invalid email or password. Try again!");
             return;
@@ -260,39 +262,40 @@ public class OnlineStoreMain implements Commands {
     }
 
     private static void removeProductByID() {
-        productStorage.printProducts();
+        PRODUCT_STORAGE.printProducts();
         System.out.println("Please input product ID for DELETE");
-        String id = scanner.nextLine();
-        productStorage.deleteProductByID(id);
+        String id = SCANNER.nextLine();
+        PRODUCT_STORAGE.deleteProductByID(id);
+        StorageSerializeUtil.serializeProductStorage(PRODUCT_STORAGE);
     }
 
     private static void addProduct() {
         System.out.println("Please input product id");
-        String id = scanner.nextLine();
-        Product productId = productStorage.getProductById(id);
+        String id = SCANNER.nextLine();
+        Product productId = PRODUCT_STORAGE.getProductById(id);
         if (productId != null) {
             System.out.println("Product with this ID is already exists!");
             return;
         }
         System.out.println("Please input product name");
-        String name = scanner.nextLine();
+        String name = SCANNER.nextLine();
         System.out.println("Please input product description");
-        String description = scanner.nextLine();
+        String description = SCANNER.nextLine();
 
         try {
             System.out.println("Please input product price");
-            double price = Double.parseDouble(scanner.nextLine());
+            double price = Double.parseDouble(SCANNER.nextLine());
             System.out.println("Please input product stockQty");
-            int stockQty = Integer.parseInt(scanner.nextLine());
+            int stockQty = Integer.parseInt(SCANNER.nextLine());
             System.out.println("Please input product type ELECTRONICS, CLOTHING OR BOOKS");
-            String type = scanner.nextLine().toUpperCase();
-            ProductType type1 = productStorage.getProductType(type);
+            String type = SCANNER.nextLine().toUpperCase();
+            ProductType type1 = PRODUCT_STORAGE.getProductType(type);
             if (type1 == null) {
                 System.out.println("You must input only ELECTRONICS, CLOTHING OR BOOKS!!!");
                 return;
             }
             Product product = new Product(id, name, description, price, stockQty, type1);
-            productStorage.add(product);
+            PRODUCT_STORAGE.add(product);
             System.out.println("Product created!");
         } catch (NumberFormatException e) {
             System.out.println("Incorrect format for Price/StockQty!!!");
@@ -301,7 +304,7 @@ public class OnlineStoreMain implements Commands {
 
     private static void registerUsers() {
         String id = UUIDUtil.generateUUID();
-        User userId = userStorage.getUserById(id);
+        User userId = USER_STORAGE.getUserById(id);
         {
             if (userId != null) {
                 System.out.println("This ID is already registered");
@@ -309,26 +312,26 @@ public class OnlineStoreMain implements Commands {
             }
         }
         System.out.println("Please input email");
-        String email = scanner.nextLine();
-        User user1 = userStorage.getUserEmail(email);
+        String email = SCANNER.nextLine();
+        User user1 = USER_STORAGE.getUserEmail(email);
         if (user1 != null) {
             System.out.println("User is already registered!");
             return;
         }
         System.out.println("Please create password");
-        String password = scanner.nextLine();
+        String password = SCANNER.nextLine();
 
         System.out.println("Please input User name");
-        String name = scanner.nextLine();
+        String name = SCANNER.nextLine();
         System.out.println("Please input type: ADMIN OR USER");
-        String type = scanner.nextLine().toUpperCase();
-        UserType type1 = userStorage.getUserAndAdminType(type);
+        String type = SCANNER.nextLine().toUpperCase();
+        UserType type1 = USER_STORAGE.getUserAndAdminType(type);
         if (type1 == null) {
             System.out.println("Wrong type!!! Input only ADMIN or USER");
             return;
         }
         User user = new User(id, name, email, password, type1);
-        userStorage.add(user);
+        USER_STORAGE.add(user);
         System.out.println("Your account created as " + type1);
     }
 }
