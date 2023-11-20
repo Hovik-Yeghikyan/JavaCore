@@ -9,11 +9,11 @@ public class FileUtil {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args){
-           //fileSearch();
-        //contentSearch();
-        //findLines();
-     //   printSizeOfPackage();
-      //  createFileWithContent();
+           fileSearch();
+        contentSearch();
+        findLines();
+        printSizeOfPackage();
+        createFileWithContent();
     }
 
     //այս մեթոդը պետք է սքաններով վերցնի երկու string.

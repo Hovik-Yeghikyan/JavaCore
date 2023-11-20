@@ -8,49 +8,46 @@ import homework1.onlineStore.types.UserType;
 import homework1.onlineStore.util.StorageSerializeUtil;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ProductStorage implements Serializable {
 
-    private Product[] products = new Product[10];
-    private int size;
+    private Set<Product> products = new HashSet<>();
 
     public void add(Product product) {
-        if (size == products.length) {
-            extend();
-        }
-        products[size++] = product;
+        products.add(product);
         StorageSerializeUtil.serializeProductStorage(this);
     }
 
     public void printProducts() {
-        for (int i = 0; i < size; i++) {
-            System.out.println(products[i]);
+        for (Product product : products) {
+            System.out.println(product);
         }
     }
 
     public Product getProductById(String id) {
-        for (int i = 0; i < size; i++) {
-            if (products[i].getId().equals(id)) {
-                return products[i];
+        for (Product product : products) {
+            if (product.getId().equals(id)) {
+                return product;
             }
         }
         return null;
     }
 
     public double getPrice(String id) {
-        for (int i = 0; i < size; i++) {
-            if (products[i].getId().equals(id)) {
-                return products[i].getPrice();
+        for (Product product : products) {
+            if (product.getId().equals(id)) {
+                return product.getPrice();
             }
         }
         return 0;
     }
 
     public void deleteProductByID(String id) {
-        for (int i = 0; i < size; i++) {
-            if (products[i].getId().equals(id)) {
-                products[i] = products[i + 1];
-                size--;
+        for (Product product : products) {
+            if (product.getId().equals(id)) {
+                products.remove(product);
                 System.out.println("Product Deleted!");
             }
         }
@@ -65,19 +62,12 @@ public class ProductStorage implements Serializable {
     }
 
     public int getQty(String id, int qty) throws OutOfStockException {
-        for (int i = 0; i < size; i++) {
-            if (products[i].getId().equals(id) && products[i].getStockQty() >= qty) {
-                return products[i].getStockQty();
+        for (Product product : products) {
+            if (product.getId().equals(id)&&product.getStockQty() >= qty){
+                return product.getStockQty();
             }
         }
         throw new OutOfStockException("You cant order product in this qty!!!");
     }
 
-
-    private void extend() {
-
-        Product[] temp = new Product[products.length + 10];
-        System.arraycopy(products, 0, temp, 0, products.length);
-        products = temp;
-    }
 }
