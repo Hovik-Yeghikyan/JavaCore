@@ -18,5 +18,9 @@ public class SetExample {
         for (Integer i : mySet) {
             System.out.println(i);
         }
+        mySet.remove(17);
+        for (Integer i : mySet) {
+            System.out.println(i);
+        }
     }
 }

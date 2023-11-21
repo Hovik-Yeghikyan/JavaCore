@@ -11,39 +11,33 @@ import java.util.Map;
 public class UserStorage implements Serializable {
 
     private Map<String,User> users  = new HashMap<>();
-//    private User[] users = new User[10];
-//    private int size;
 
     public void add(User user) {
         users.put(user.getEmail(),user);
-//        if (size == users.length) {
-//            extend();
-//        }
-//        users[size++] = user;
         StorageSerializeUtil.serializeUserStorage(this);
     }
 
     public void printOnlyUsers() {
-        for (int i = 0; i < size; i++) {
-            if (users[i].getType() == UserType.USER) {
-                System.out.println(users[i]);
+        for (User value : users.values()) {
+            if (value.getType()==UserType.USER){
+                System.out.println(value);
             }
         }
     }
 
     public User getUserEmail(String email) {
-        for (int i = 0; i < size; i++) {
-            if (users[i].getEmail().equals(email)) {
-                return users[i];
+        for (User value : users.values()) {
+            if (value.getEmail().equals(email)){
+                return value;
             }
         }
         return null;
     }
 
     public User getUserById(String id) {
-        for (int i = 0; i < size; i++) {
-            if (users[i].getId().equals(id)) {
-                return users[i];
+        for (User value : users.values()) {
+            if (value.getId().equals(id)){
+                return value;
             }
         }
         return null;
@@ -51,9 +45,9 @@ public class UserStorage implements Serializable {
 
 
     public User getUserEmailAndPassword(String email, String password) {
-        for (int i = 0; i < size; i++) {
-            if (users[i].getEmail().equals(email) && users[i].getPassword().equals(password)) {
-                return users[i];
+        for (User value : users.values()) {
+            if(value.getEmail().equals(email)&&value.getPassword().equals(password)){
+                return value;
             }
         }
         return null;
@@ -65,21 +59,5 @@ public class UserStorage implements Serializable {
         }
         return null;
     }
-
-    public String getIdUser(User user) {
-        for (int i = 0; i < size; i++) {
-            if (users[i].equals(user)) {
-                return users[i].getId();
-            }
-        }
-        return null;
-    }
-
-
-//    private void extend() {
-//        User[] temp = new User[users.length + 10];
-//        System.arraycopy(users, 0, temp, 0, users.length);
-//        users = temp;
-//    }
 }
 

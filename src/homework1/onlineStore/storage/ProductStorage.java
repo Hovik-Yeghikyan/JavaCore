@@ -45,12 +45,17 @@ public class ProductStorage implements Serializable {
     }
 
     public void deleteProductByID(String id) {
-        for (Product product : products) {
-            if (product.getId().equals(id)) {
-                products.remove(product);
-                System.out.println("Product Deleted!");
-            }
+        if (products.removeIf(product -> product.getId().equals(id))) {
+            System.out.println("Product Deleted!");
+        }else {
+            System.out.println("product not found");
         }
+
+//        for (Product product : products) {  -> ConcurrentModificationException
+//            if (product.getId().equals(id)){
+//                products.remove(product);
+//            }
+//        }
     }
 
     public ProductType getProductType(String type) {
