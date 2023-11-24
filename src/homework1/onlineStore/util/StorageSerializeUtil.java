@@ -21,6 +21,10 @@ public class StorageSerializeUtil {
     }
 
     public static UserStorage deserializeUserStorage() {
+        File file = new File(USER_FILE_PATH);
+        if (!file.exists()) {
+            return new UserStorage();
+        }
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(USER_FILE_PATH))) {
             Object o = inputStream.readObject();
             if (o instanceof UserStorage userStorage) {
@@ -41,9 +45,13 @@ public class StorageSerializeUtil {
     }
 
     public static ProductStorage deserializeProductStorage() {
+        File file = new File(PRODUCT_FILE_PATH);
+        if (!file.exists()) {
+            return new ProductStorage();
+        }
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(PRODUCT_FILE_PATH))) {
-            Object o = inputStream.readObject();
-            if (o instanceof ProductStorage productStorage) {
+            Object object = inputStream.readObject();
+            if (object instanceof ProductStorage productStorage) {
                 return productStorage;
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -61,16 +69,20 @@ public class StorageSerializeUtil {
     }
 
     public static OrderStorage deserializeOrderStorage() {
+        File file = new File(ORDER_FILE_PATH);
+        if (!file.exists()) {
+            return new OrderStorage();
+        }
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(ORDER_FILE_PATH))) {
-            Object o = inputStream.readObject();
-            if (o instanceof OrderStorage orderStorage) {
+            Object object = inputStream.readObject();
+            if (object instanceof OrderStorage orderStorage) {
                 return orderStorage;
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return new OrderStorage();
+
+
     }
-
-
 }

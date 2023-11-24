@@ -32,6 +32,7 @@ public class UserStorage implements Serializable {
             }
         }
         return null;
+      //  return users.get(email);
     }
 
     public User getUserById(String id) {

@@ -1,7 +1,4 @@
-package homework.chapter14.collection;
-
-import homework1.onlineStore.model.User;
-import homework1.onlineStore.types.UserType;
+package homework.collection;
 
 import java.util.*;
 

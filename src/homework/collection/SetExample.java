@@ -1,9 +1,7 @@
-package homework.chapter14.collection;
+package homework.collection;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class SetExample {
 

@@ -9,6 +9,7 @@ import homework1.onlineStore.util.StorageSerializeUtil;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class ProductStorage implements Serializable {
@@ -45,17 +46,24 @@ public class ProductStorage implements Serializable {
     }
 
     public void deleteProductByID(String id) {
-        if (products.removeIf(product -> product.getId().equals(id))) {
-            System.out.println("Product Deleted!");
-        }else {
-            System.out.println("product not found");
-        }
+//        if (products.removeIf(product -> product.getId().equals(id))) {
+//            System.out.println("Product Deleted!");
+//        }else {
+//            System.out.println("product not found");
+//        }
 
 //        for (Product product : products) {  -> ConcurrentModificationException
 //            if (product.getId().equals(id)){
 //                products.remove(product);
 //            }
 //        }
+        Iterator<Product> iterator = products.iterator();
+        while (iterator.hasNext()){
+            Product next = iterator.next();
+            if (next.getId().equals(id)){
+                iterator.remove();
+            }
+        }
     }
 
     public ProductType getProductType(String type) {

@@ -161,7 +161,6 @@ public class OnlineStoreMain implements Commands {
             Product product1 = PRODUCT_STORAGE.getProductById(product);
             int temp = product1.getStockQty() - order.getQty();
             product1.setStockQty(temp);
-           // StorageSerializeUtil.serializeProductStorage(PRODUCT_STORAGE);
             StorageSerializeUtil.serializeOrderStorage(ORDER_STORAGE);
 
             System.out.println("Product DELIVERED");

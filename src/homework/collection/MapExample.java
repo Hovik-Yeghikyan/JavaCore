@@ -1,10 +1,8 @@
-package homework.chapter14.collection;
+package homework.collection;
 
 import homework1.onlineStore.model.User;
 import homework1.onlineStore.types.UserType;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
