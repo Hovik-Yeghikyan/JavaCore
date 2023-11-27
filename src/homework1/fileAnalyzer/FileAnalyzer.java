@@ -1,5 +1,8 @@
 package homework1.fileAnalyzer;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
 
@@ -8,7 +11,9 @@ public class FileAnalyzer {
     public Map<String, Integer> wordMap(String path) throws IOException {
         // Читаем файл, составляем мапу слово-количество и возвращаем ее
         return null;
-    }
+        }
+
+
 
     public int totalWordCount(String path) throws IOException {
         // Читаем файл, подсчитываем общее количество слов

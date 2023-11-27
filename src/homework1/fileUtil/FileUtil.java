@@ -69,6 +69,7 @@ public class FileUtil {
                     System.out.println(lineNumber + " " + line);
                 }
                 lineNumber++;
+
             }
         } catch (IOException e) {
             e.printStackTrace();
