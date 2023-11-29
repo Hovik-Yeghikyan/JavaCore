@@ -5,30 +5,29 @@ public class Q {
     boolean valueSet = false;
 
     synchronized int get() {
-        while (!valueSet) {
+        while (!valueSet)
             try {
                 wait();
             } catch (InterruptedException e) {
                 System.out.println("InterruptedException перехвачено");
             }
-        }
-            System.out.println("Получено " + n);
-            valueSet = false;
-            notify();
+        System.out.println("Получено " + n);
+        valueSet = false;
+        notify();
         return n;
     }
 
-    synchronized void put(int n){
-        while (valueSet) {
+    synchronized void put(int n) {
+        while (valueSet)
             try {
                 wait();
             } catch (InterruptedException e) {
                 System.out.println("InterruptedException перехвачено");
             }
-            this.n = n;
-            valueSet = true;
-            System.out.println("Отправлено " + n);
-            notify();
-        }
+        this.n = n;
+        valueSet = true;
+        System.out.println("Отправлено " + n);
+        notify();
+
     }
 }
