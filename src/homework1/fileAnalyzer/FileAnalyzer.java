@@ -3,8 +3,7 @@ package homework1.fileAnalyzer;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class FileAnalyzer {
 
@@ -14,13 +13,19 @@ public class FileAnalyzer {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                int value = 1;
-                String[] words = line.split(" ");
+                String[] words = line.replaceAll(",", " ").
+                        replaceAll(":", " ").
+                        replaceAll("\\.", " ")
+                        .replaceAll(";", " ")
+                        .split(" ");
                 for (String word : words) {
-                    if (map.containsKey(word)) {
-                        map.put(word, map.get(word) + 1);
-                    } else {
-                        map.put(word, value);
+                    if (!word.trim().isEmpty()) {
+                        if (map.containsKey(word)) {
+                            Integer count = map.get(word);
+                            map.put(word, ++count);
+                        } else {
+                            map.put(word, 1);
+                        }
                     }
                 }
             }
@@ -57,14 +62,19 @@ public class FileAnalyzer {
     // Читаем файл, находим топ-N часто встречающихся слов
     public Map<String, Integer> topFrequentWords(String path, int n) {
         Map<String, Integer> map = wordMap(path);
-        Map<String, Integer> newMap = new HashMap<>();
-        for (Map.Entry<String, Integer> stringIntegerEntry : map.entrySet()) {
-            if (stringIntegerEntry.getValue() >= n) {
-                newMap.put(stringIntegerEntry.getKey(), stringIntegerEntry.getValue());
+        List<Map.Entry<String, Integer>> entries = new ArrayList<>(map.entrySet());
+        entries.sort(new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return o2.getValue().compareTo(o1.getValue());
             }
+        });
+        Map<String, Integer> resultMap = new LinkedHashMap<>();
+        for (int i = 0; i < n; i++) {
+            Map.Entry<String, Integer> stringIntegerEntry = entries.get(i);
+            resultMap.put(stringIntegerEntry.getKey(), stringIntegerEntry.getValue());
         }
-        return newMap;
-
+        return resultMap;
     }
 
     // Читаем файл, находим количество вхождений слова и возвращаем это число

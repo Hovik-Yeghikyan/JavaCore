@@ -9,7 +9,7 @@ public class FileAnalyzerMain {
         System.out.println(fileAnalyzer.wordMap(filePath));
         System.out.println("total count of words: " + fileAnalyzer.totalWordCount(filePath));
         System.out.println("unique count of words: " + fileAnalyzer.uniqueWordCount(filePath));
-        System.out.println("top Frequent Words is: " + fileAnalyzer.topFrequentWords(filePath, 3));
+        System.out.println("top Frequent Words is: " + fileAnalyzer.topFrequentWords(filePath, 4));
         System.out.println("count Word Occurrences is: " + fileAnalyzer.countWordOccurrences(filePath, "Hello"));
     }
 }
